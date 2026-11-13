@@ -1,69 +1,73 @@
 # Sivaguru R.M.
 
-**Systems & AI Engineer** &middot; Chennai, India  
+**Systems & AI Research Engineer** &middot; Chennai, India  
 `sivagurumurugan1@gmail.com` &middot; [github.com/Sivaguru-2008](https://github.com/Sivaguru-2008)
 
 ---
 
-I build deterministic systems, execution engines, and safety infrastructure for autonomous agents and machine learning pipelines. My focus centers on distributed consistency, side-effect fencing, memory-efficient LLM inference, and verifiable offline compliance.
+I research and engineer deterministic execution engines, side-effect safety layers for autonomous agents, memory-efficient LLM inference architectures, and verifiable offline compliance pipelines. My work prioritizes distributed consistency, rigorous algorithmic foundations, empirical reproducibility, and intellectual honesty.
 
 ---
 
-### Core Engineering Focus
+### Core Technical Focus
 
-- **Deterministic Agent Infrastructure:** Event-sourced execution, distributed lease fencing, and crash-consistent replay sandboxing for autonomous workflows.
-- **LLM Systems & Inference Optimization:** KV-cache compression via joint token-channel bit allocation, packed sub-byte quantization, and speculative verification.
-- **Compliance & Deterministic Parsing:** AST/grammar parsers for heterogeneous infrastructure configs (Cisco, Juniper, Fortinet, Arista, SONiC) with zero-hallucination compliance verification.
-- **Safety & Calibrated Inference:** Finite-sample conformal prediction, streaming population statistics, and distinguishing measurement-limited uncertainty from model ambiguity.
+- **Deterministic Agent Systems:** Append-only event-sourced execution, lease-based crash recovery, and side-effect fencing (`agent-fence`) that prevents duplicate external actions during non-deterministic LLM retries.
+- **LLM Inference Systems & Caching:** Rate-distortion KV cache compression, joint token-channel allocation, packed sub-byte quantization (INT2/INT4/INT8), and speculative verification.
+- **Deterministic Parsing & Compliance:** Air-gapped, offline AST/grammar parsers for heterogeneous infrastructure configs (Cisco, Juniper, Fortinet, Arista, SONiC) with line-level evidence traceability.
+- **Algorithmic Foundations & Computational Geometry:** Logarithmic-time spatial data structures (Orthogonal Range Trees with Fractional Cascading, Slab-Decomposition Point Location) implemented in low-level languages without external framework bloat.
+- **Calibrated AI & Statistical Safety:** Finite-sample conformal prediction, streaming population statistics (PSSA with Clopper–Pearson intervals & BH FDR correction), and separating finite-shot measurement doubt from model ambiguity.
 
 ---
 
-### Selected Flagship Projects
+### Flagship Projects
 
-#### [Agent Runtime](https://github.com/Sivaguru-2008/agent-runtime)
-*Production-grade execution engine and safety layer for autonomous AI agents.*
-- **Architecture:** Decouples cognition from execution dispatch using an append-only PostgreSQL event store, distributed lease coordination, and Redis Streams priority routing.
-- **Side-Effect Fencing (`agent-fence`):** Enforces at-most-once semantics on irreversible external operations via canonical hash matching, schema projection, and causal risk escalation.
-- **Deterministic Replay:** Allows arbitrary historical execution branches to be forked and stepped through in an isolated sandbox without repeating real-world side effects.
-- **Engineering Standard:** 984+ automated unit, invariant, and integration tests across API and SDK workspaces.
-- *Stack: TypeScript, Fastify, PostgreSQL, Redis Streams, Next.js 14, Docker, Vitest*
+#### [1. Agent Runtime](https://github.com/Sivaguru-2008/agent-runtime)
+*Deterministic execution engine and side-effect safety runtime for autonomous AI agents.*
+- **V1 Core Architecture:** Decouples cognition from execution dispatch via an append-only PostgreSQL 16 event store (`events`, `executions`, `execution_leases`, `tool_call_dedup`, `replay_branches`). Operates as a robust single-process Fastify runtime streaming live execution DAGs and timelines via PostgreSQL `LISTEN`/`NOTIFY`.
+- **Side-Effect Fencing (`agent-fence`):** Enforces at-most-once semantics on irreversible tools (Stripe refunds, database writes, external APIs) using canonical parameter hashing, schema projection, and LLM semantic validation to catch non-deterministic retry paraphrases.
+- **Deterministic Replay Sandbox:** Forks historical execution timelines from arbitrary checkpoints into isolated sandbox branches to reproduce failures and step-debug prompt improvements.
+- **Verification Standard:** 984+ automated unit, invariant, and reliability tests passing across API and SDK workspaces.
+- *Stack: TypeScript 5.6, Fastify 4.28, PostgreSQL 16, Next.js 15, Vitest, Docker*
 
-#### [UniKV](https://github.com/Sivaguru-2008/UniKV)
+#### [2. UniKV](https://github.com/Sivaguru-2008/UniKV)
 *Unified KV cache compression with joint token-channel allocation and speculative verification.*
-- **Formulation:** Unifies token eviction and mixed-precision quantization under a single rate-distortion knapsack allocation with exact eviction identity derivations.
-- **Implementation:** Custom packed int2 / int4 / int8 cache storage, packed SDPA attention kernels with per-head eviction masks, and streaming AIMD precision controllers.
-- **Empirical Validation:** Benchmarked against 6 state-of-the-art baselines (StreamingLLM, SnapKV, Knorm, H2O, KIVI-4/2, RDKV) across multi-turn context and Needle-in-a-Haystack tasks.
-- *Stack: Python, PyTorch, CUDA / Triton, Shell*
+- **Mathematical Grounding:** Unifies token eviction and mixed-precision quantization into a rate-distortion knapsack allocation under fixed GPU memory constraints. Derived the exact attention eviction identity $\mathbf{o}_S - \mathbf{o} = m_E(\mathbf{o}_S - \mathbf{o}_E)$ (empirically bounded to $\le 3.7 \times 10^{-8}$ max numerical error in float32).
+- **Custom Cache & Kernels:** Implemented packed 2-bit, 4-bit, and 8-bit integer cache memory layouts and packed SDPA attention with per-head active eviction masks.
+- **Empirical Findings:** Validated on LLaMA and Qwen models on NVIDIA RTX Blackwell architecture. Discovered that the uncompressed baseline exhibits a $1.2\%$ verification noise floor caused by bf16 logit ties, and documented that query-agnostic eviction suffers a $+0.950 \pm 0.035$ retrieval collapse on needle-in-a-haystack tasks when questions follow context.
+- *Stack: Python 3.12, PyTorch, Custom Sub-Byte Quantizer, Bash Benchmark Suites*
 
-#### [CASCADE](https://github.com/Sivaguru-2008/cascade)
-*Real-time clinical prescribing cascade surveillance on IBM LinuxONE (s390x).*
-- **Dual-Loop Pipeline:** Loop 1 performs millisecond-latency dispensing stream interception (XGBoost + SHAP feature attribution); Loop 2 runs streaming Prescription Sequence Symmetry Analysis (PSSA) across population data with Clopper–Pearson confidence intervals and Benjamini–Hochberg FDR correction.
-- **Enterprise Hardening:** Privacy-by-design tokenization (HMAC-SHA256 at ingest), AES-256-GCM encrypted persistence, and automated regulatory reporting for India's Pharmacovigilance Programme (PvPI).
+#### [3. ConfigIQ (Network Compliance)](https://github.com/Sivaguru-2008/network-compliance)
+*Deterministic multi-vendor network security compliance auditor (SIH 2026).*
+- **Unified Baseline Normalization:** Deterministic AST and grammar parsers normalize Cisco IOS/IOS-XE, Juniper Junos, Fortinet FortiOS, Arista EOS, and SONiC configurations into a single vendor-neutral `SecurityBaselineModel`.
+- **Zero-Cloud Air-Gapped Verification:** Evaluates device baselines against CIS Benchmarks, NIST 800-53, and DISA STIG controls. Enforces socket-level isolation to guarantee zero data egress; every verdict (`PASS`/`FAIL`/`NEEDS_REVIEW`) links directly to the exact configuration line number.
+- **Isolated LLM Fallback:** Unsupported third-party vendor configurations never receive fabricated passes; optional opt-in LLM fallback (`--allow-llm`) cleanly tags unverified configurations as `NEEDS_REVIEW`.
+- *Stack: Python 3.12, AST Parsers, Pytest, Docker, SQLite Rule Base*
+
+#### [4. CASCADE](https://github.com/Sivaguru-2008/cascade)
+*Real-time clinical prescribing cascade surveillance on IBM LinuxONE (s390x) | IBM Z Datathon 2026.*
+- **Dual-Loop Streaming Pipeline:** Loop 1 performs millisecond-latency dispensing stream interception combining an XGBoost classifier with SHAP feature attribution; Loop 2 executes streaming Prescription Sequence Symmetry Analysis (PSSA) across population dispensing events to discover unknown drug cascade pairs.
+- **Statistical Rigor:** Controls for background prescribing trends via null-ratio adjustments, calculates exact Clopper–Pearson binomial confidence intervals, and applies Benjamini–Hochberg False Discovery Rate (FDR) corrections.
+- **Privacy & Security:** Edge-layer tokenization (HMAC-SHA256 at ingest), AES-256-GCM encrypted persistence at rest, role-based access control, and automated report generation for the Pharmacovigilance Programme of India (PvPI).
 - *Stack: Python, FastAPI, XGBoost, SHAP, SQLite / PostgreSQL, Docker, IBM LinuxONE (s390x)*
 
-#### [ConfigIQ / Network Compliance](https://github.com/Sivaguru-2008/network-compliance)
-*Deterministic multi-vendor network security compliance auditor (SIH 2026).*
-- **Unified Normalization:** Custom deterministic grammar parsers normalize Cisco IOS/IOS-XE, Juniper Junos, Fortinet FortiOS, Arista EOS, and SONiC configurations into a single vendor-neutral `SecurityBaselineModel`.
-- **Zero Hallucination:** Evaluates configs against CIS Benchmarks, NIST 800-53, and DISA STIG controls with every `PASS` / `FAIL` / `NEEDS_REVIEW` verdict backed by exact line-number traceability. Runs 100% offline.
-- *Stack: Python, AST Parsing, Pytest, Docker, CIS Benchmark Suites*
-
-#### [AURA](https://github.com/Sivaguru-2008/aura)
+#### [5. AURA](https://github.com/Sivaguru-2008/aura)
 *Clinical intelligence copilot with quantum-classical evidence fusion and calibrated doubt.*
-- **Finite-Shot Separation:** Distinguishes between *measurement-limited doubt* (resolvable with higher shot budgets) and *model-limited doubt* (irreducible ambiguity requiring human clinical escalation) using PennyLane variational circuits executed on IBM Quantum hardware (`ibm_marrakesh`).
-- **Grounded Evaluation:** Incorporates Bayesian product-of-experts baselines, conformal prediction with abstention, and full offline privacy.
+- **Finite-Shot Doubt Separation:** Distinguishes between *measurement-limited doubt* (resolvable by buying higher shot counts: $\text{Var}[\langle Z \rangle] = (1 - \langle Z \rangle^2)/n_{\text{shots}}$) and *model-limited doubt* (irreducible ambiguity requiring human clinical escalation) using PennyLane variational quantum circuits executed on real IBM Quantum hardware (`ibm_marrakesh`).
+- **Intellectual Honesty:** Evaluates against classical Bayesian product-of-experts baselines with conformal prediction; transparently documents that while VQCs do not exceed well-calibrated classical models on raw diagnostic accuracy, they provide valuable finite-shot measurement separation on offline clinical edge devices.
 - *Stack: Python, PennyLane, Qiskit, Conformal Prediction, FastAPI*
 
-#### [Emergency Dispatch System](https://github.com/Sivaguru-2008/emergency-dispatch-system)
-*Logarithmic-time spatial resource allocation and emergency ambulance dispatch.*
-- **Algorithmic Core:** Implemented 2D Orthogonal Range Trees augmented with Fractional Cascading, reducing 2D spatial queries from $O(\log^2 n + k)$ to optimal $O(\log n + k)$.
-- **Point Location:** Slab-decomposition method answering zone-incident routing queries in $O(\log n)$ time. Pure Java implementation with zero external framework overhead.
-- *Stack: Java (Core SE), Computational Geometry, Spatial Data Structures*
+#### [6. Emergency Dispatch System](https://github.com/Sivaguru-2008/emergency-dispatch-system)
+*Logarithmic-time spatial resource allocation and ambulance routing in Java.*
+- **Algorithmic Purity:** Implemented 2D Orthogonal Range Trees augmented with Fractional Cascading from first principles without external third-party dependencies, reducing 2D spatial window search from $O(\log^2 n + k)$ to optimal $O(\log n + k)$.
+- **Point Location:** Slab-decomposition method answering zone routing queries in $O(\log n)$ time.
+- **Empirical Performance:** Verified against brute-force linear search over 11,000 randomized spatial queries; empirical benchmarks show a **93.1x speedup** over linear scan at $N = 10,000$ points and 62 ms build time for $N = 50,000$ points.
+- *Stack: Java (Core SE 17), Computational Geometry, Spatial Data Structures*
 
 ---
 
 ### Technical Competencies
 
-- **Languages:** TypeScript, JavaScript (Node.js), Python, Java, C, SQL
-- **Distributed Systems & Backend:** Event Sourcing, Transactional Outboxes, Distributed Locking / Leases, Idempotent APIs, PostgreSQL, Redis Streams, Docker
-- **AI Systems & Safety:** Agent Runtime Fencing, KV-Cache Quantization & Eviction, Token Diagnostics, Conformal Safety, XGBoost, SHAP
-- **Engineering Rigor:** Invariant Testing, Deterministic Replay, Chaos & Recovery Validation, Clean Architecture, CI/CD
+- **Languages:** TypeScript, JavaScript (Node.js), Python, Java (SE 17), C, SQL
+- **Systems & Architecture:** Event Sourcing, Transactional Outboxes, Crash Recovery & Replay, Idempotency Protocols, Fastify, PostgreSQL 16, Docker
+- **AI & Systems Research:** Rate-Distortion KV Cache Allocation, Sub-Byte Quantization, Agent Fencing, Conformal Prediction, XGBoost, SHAP
+- **Engineering Hygiene:** Invariant & Property-Based Testing, Deterministic Offline Execution, Conventional Commits, CI/CD
